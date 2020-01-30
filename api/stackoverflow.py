@@ -5,11 +5,21 @@ class StackOverflowClient:
     """
     """
 
-    def __init__(self, key=None):
-        self._key = key
+    def __init__(self):
+        self._key = self._get_stack_key()
         self._url = "https://api.stackexchange.com"
         self._site = "stackoverflow"
         self._client = Client()
+
+    def _get_stack_key(self):
+        """
+        """
+        try:
+            import os
+
+            return os.environ["STACK_KEY"]
+        except KeyError:
+            return None
 
     def get_questions(self, sort, order, tagged, size, from_date=None):
         """
@@ -61,38 +71,6 @@ class StackOverflowClient:
         """
         """
         if result is not None and "items" in result:
-            return result["items"]
+            return {"result": result["items"]}
         else:
-            return list()
-
-
-class SAILClient(StackOverflowClient):
-    """
-    """
-
-    def get_ten_android_questions_last_week(self):
-        """
-        10 most voted Android-related questions that are created in the past
-        week.
-        """
-        from datetime import datetime, timedelta
-
-        last_week = datetime.today() - timedelta(days=7)
-        result = self.get_questions(
-            sort="votes",
-            order="desc",
-            tagged="android",
-            size=10,
-            from_date=int(last_week.timestamp()),
-        )
-
-        return result
-
-    def get_ten_newest_questions(self):
-        """
-        10 newest Android-related questions
-        """
-        result = self.get_questions(
-            sort="creation", order="desc", tagged="android", size=10,
-        )
-        return result
+            return {"result": list()}
