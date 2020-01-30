@@ -5,7 +5,8 @@ class StackOverflowClient:
     """
     """
 
-    def __init__(self):
+    def __init__(self, key=None):
+        self._key = key
         self._url = "https://api.stackexchange.com"
         self._site = "stackoverflow"
         self._client = Client()
@@ -13,16 +14,12 @@ class StackOverflowClient:
     def get_questions(self, sort, order, tagged, size, from_date=None):
         """
         """
-        params = {
-            "pagesize": int(size),
-            "order": order,
-            "sort": sort,
-            "tagged": tagged,
-            "filter": "withbody",
-            "site": self._site,
-        }
-        if from_date:
-            params["fromdate"] = int(from_date)
+        params = self._get_default_params()
+        params["pagesize"] = size
+        params["order"] = order
+        params["sort"] = sort
+        params["tagged"] = tagged
+        params["fromdate"] = from_date
 
         result = self._client.get(f"{self._url}/questions", params)
         return self._get_items(result)
@@ -30,13 +27,10 @@ class StackOverflowClient:
     def get_answers(self, question_id, size=100, order="desc", sort="votes"):
         """
         """
-        params = {
-            "pagesize": int(size),
-            "order": order,
-            "sort": sort,
-            "filter": "withbody",
-            "site": self._site,
-        }
+        params = self._get_default_params()
+        params["pagesize"] = size
+        params["order"] = order
+        params["sort"] = sort
 
         result = self._client.get(
             f"{self._url}/questions/{question_id}/answers", params
@@ -46,16 +40,22 @@ class StackOverflowClient:
     def get_comments(self, post_id, size=100, order="desc", sort="creation"):
         """
         """
-        params = {
-            "pagesize": int(size),
-            "order": order,
-            "sort": sort,
-            "filter": "withbody",
-            "site": self._site,
-        }
+        params = self._get_default_params()
+        params["pagesize"] = size
+        params["order"] = order
+        params["sort"] = sort
 
         result = self._client.get(f"{self._url}/posts/{post_id}/comments", params)
         return self._get_items(result)
+
+    def _get_default_params(self):
+        """
+        """
+        return {
+            "filter": "withbody",
+            "site": self._site,
+            "key": self._key,
+        }
 
     def _get_items(self, result):
         """
@@ -83,7 +83,7 @@ class SAILClient(StackOverflowClient):
             order="desc",
             tagged="android",
             size=10,
-            from_date=last_week.timestamp(),
+            from_date=int(last_week.timestamp()),
         )
 
         return result
