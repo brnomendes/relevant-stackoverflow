@@ -62,14 +62,15 @@ new Vue({
                     questions: [],
                 },
             ],
+            tag: 'android',
         }
     },
     mounted() {
         axios
-            .get('/questions/top_ten_last_week/android')
+            .get(`/questions/top_ten_last_week/${this.tag}`)
             .then(response => (this.data[0].questions = response.data.result))
         axios
-            .get('/questions/ten_newest/android')
+            .get(`/questions/ten_newest/${this.tag}`)
             .then(response => (this.data[1].questions = response.data.result))
     },
 });
