@@ -8,4 +8,4 @@ if __name__ == "__main__":
 
     routes = Routes(flask_app, api_client)
     routes.configure()
-    routes.run()
+    routes.run(debug=True)

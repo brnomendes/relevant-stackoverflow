@@ -1,7 +1,7 @@
 class Routes:
     """
     """
-
+    
     def __init__(self, flask_app, api_client):
         """
         """
@@ -16,19 +16,18 @@ class Routes:
         self._configure_answers()
         self._configure_comments()
 
-    def run(self):
+    def run(self, debug=False):
         """
         """
-        self._flask_app.run()
+        self._flask_app.run(debug=debug)
 
     def _configure_index(self):
         """
         """
-        from flask import render_template
 
         @self._flask_app.route("/")
         def index():
-            return render_template("index.html")
+            return self._flask_app.send_static_file("index.html")
 
     def _configure_questions(self, subpath="questions"):
         """
