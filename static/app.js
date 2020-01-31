@@ -1,14 +1,22 @@
+Vue.component('question-box', {
+    props: ['question'],
+    template: '#question-template',
+})
+
 new Vue({
     el: '#questions',
     data() {
         return {
-            data: [{
-                title: "10 Most Voted Questions in Last Week",
-                questions: [],
-            }, {
-                title: "10 Newest Questions",
-                questions: [],
-            }, ],
+            data: [
+                {
+                    title: "10 Most Voted Questions in Last Week",
+                    questions: [],
+                },
+                {
+                    title: "10 Newest Questions",
+                    questions: [],
+                },
+            ],
         }
     },
     mounted() {

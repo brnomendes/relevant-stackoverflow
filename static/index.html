@@ -1,96 +1,108 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Relevant StackOverflow</title>
-        <!-- Load CSS Libraries -->
-        <link rel="stylesheet" href="/static/libs/bulma-v0.8.0.min.css">
-    </head>
-    <body>
-        <section class="hero is-dark">
-            <div class="hero-body">
-                <div class="container">
-                    <h1 class="title">
-                        <span class="icon"><i class="fab fa-stack-overflow"></i></span>
-                        Relevant StackOverflow
-                    </h1>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Relevant StackOverflow</title>
+    <!-- Load CSS Libraries -->
+    <link rel="stylesheet" href="/static/libs/bulma-v0.8.0.min.css">
+</head>
+
+<body>
+    <section class="hero is-dark">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">
+                    <span class="icon"><i class="fab fa-stack-overflow"></i></span>
+                    Relevant StackOverflow
+                </h1>
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <section class="section">
+            <div class="columns" id="questions">
+                <div class="column" v-for="d in data">
+                    <p class="panel-heading">
+                        {{ d.title }}
+                    </p>
+                    <div>
+                        <question-box v-for="question in d.questions" v-bind:question="question">
+                        </question-box>
+                    </div>
                 </div>
             </div>
         </section>
-        <div class="container">
-            <section class="section">
-                <div class="columns" id="questions">
-                    <div class="column" v-for="d in data">
-                        <p class="panel-heading">
-                            {{ d.title }}
-                        </p>
-                        <div>
-                            <div class="box" v-for="question in d.questions">
-                                <article class="media">
-                                    <div class="media-left">
-                                        <figure class="image is-64x64">
-                                            <img v-bind:src="question.owner.profile_image" alt="Image">
-                                        </figure>
-                                    </div>
-                                    <div class="media-content">
-                                        <div class="content">
-                                            <p>
-                                                <strong>{{ question.owner.display_name }}</strong> <small>{{ question.creation_date | timeAgo }}</small>
-                                                <br>
-                                                {{ question.title }}
-                                            </p>
+    </div>
+    <!-- Load JS Libraries -->
+    <script src="/static/libs/moment-v2.24.0.min.js"></script>
+    <script src="/static/libs/vue-v2.6.11.js"></script>
+    <script src="/static/libs/fontawesome-v5.12.0.min.js"></script>
+    <script src="/static/libs/axios-v0.19.2.min.js"></script>
+    <!-- Load JS Source Code -->
+    <script src="/static/app.js"></script>
+
+</body>
+
+</html>
+
+<script type="text/x-template" id="question-template">
+    <div class="box">
+        <article class="media">
+            <div class="media-left">
+                <figure class="image is-64x64">
+                    <img v-bind:src="question.owner.profile_image" alt="Image">
+                </figure>
+            </div>
+            <div class="media-content">
+                <div class="content">
+                    <p>
+                        <strong>{{ question.owner.display_name }}</strong>
+                        <small>{{ question.creation_date | timeAgo }}</small>
+                        <br>
+                        {{ question.title }}
+                    </p>
+                </div>
+                <nav class="level is-mobile">
+                    <div class="level-left">
+                        <div class="level-item">
+                            <div class="field is-grouped is-grouped-multiline level-item">
+                                <div class="control">
+                                    <a v-bind:href="question.link" target="_blank">
+                                        <div class="tags has-addons">
+                                            <span class="tag is-dark">open</span>
+                                            <span class="tag is-link"><span class="icon is-small"><i
+                                                        class="fas fa-external-link-alt" aria-hidden="true"></i></span></span>
                                         </div>
-                                        <nav class="level is-mobile">
-                                            <div class="level-left">
-                                                <div class="level-item">
-                                                    <div class="field is-grouped is-grouped-multiline level-item">
-                                                        <div class="control">
-                                                            <a v-bind:href="question.link" target="_blank">
-                                                                <div class="tags has-addons">
-                                                                    <span class="tag is-dark">open</span>
-                                                                    <span class="tag is-link"><span class="icon is-small"><i class="fas fa-external-link-alt" aria-hidden="true"></i></span></span>
-                                                                </div>
-                                                            </a>
-                                                        </div>
-                                                        <div class="control">
-                                                            <a>
-                                                                <div class="tags has-addons">
-                                                                    <span class="tag is-dark">expand</span>
-                                                                    <span class="tag is-primary"><span class="icon is-small"><i class="fas fa-expand" aria-hidden="true"></i></span></span>
-                                                                </div>
-                                                            </a>
-                                                        </div>
-                                                        <div class="control">
-                                                            <div class="tags has-addons">
-                                                                <span class="tag is-dark">score</span>
-                                                                <span class="tag is-danger">{{ question.score }}</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="control">
-                                                            <div class="tags has-addons">
-                                                                <span class="tag is-dark">answers</span>
-                                                                <span class="tag is-info">{{ question.answer_count }}</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </nav>
+                                    </a>
+                                </div>
+                                <div class="control">
+                                    <a>
+                                        <div class="tags has-addons">
+                                            <span class="tag is-dark">expand</span>
+                                            <span class="tag is-primary"><span class="icon is-small"><i class="fas fa-expand"
+                                                        aria-hidden="true"></i></span></span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="control">
+                                    <div class="tags has-addons">
+                                        <span class="tag is-dark">score</span>
+                                        <span class="tag is-danger">{{ question.score }}</span>
                                     </div>
-                                </article>
+                                </div>
+                                <div class="control">
+                                    <div class="tags has-addons">
+                                        <span class="tag is-dark">answers</span>
+                                        <span class="tag is-info">{{ question.answer_count }}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
-        </div>
-        <!-- Load JS Libraries -->
-        <script src="/static/libs/moment-v2.24.0.min.js"></script>
-        <script src="/static/libs/vue-v2.6.11.js"></script>
-        <script src="/static/libs/fontawesome-v5.12.0.min.js"></script>
-        <script src="/static/libs/axios-v0.19.2.min.js"></script>
-        <!-- Load JS Source Code -->
-        <script src="/static/app.js"></script>
-    </body>
-</html>
+                </nav>
+            </div>
+        </article>
+    </div>
+</script>
