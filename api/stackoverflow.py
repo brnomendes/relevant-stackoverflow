@@ -3,6 +3,7 @@ from api.client import Client
 
 class StackOverflowClient:
     """
+    A client to query data on the StackOverflow API.
     """
 
     def __init__(self):
@@ -13,6 +14,11 @@ class StackOverflowClient:
 
     def _get_stack_key(self):
         """
+        Try to get the stack overflow API key from the environment variables.
+        
+        :rtype str|None:
+        :returns:
+            User API key or None otherwise.
         """
         try:
             import os
@@ -23,6 +29,11 @@ class StackOverflowClient:
 
     def get_questions(self, sort, order, tagged, size, from_date=None):
         """
+        Get the questions from the StackOverflow API.
+        
+        :rtype dict("result": list):
+        :returns:
+            A dictionary with the query result.
         """
         params = self._get_default_params()
         params["pagesize"] = size
@@ -36,6 +47,11 @@ class StackOverflowClient:
 
     def get_answers(self, question_id, size=100, order="desc", sort="votes"):
         """
+        Get the answers from the StackOverflow API.
+        
+        :rtype dict("result": list):
+        :returns:
+            A dictionary with the query result.
         """
         params = self._get_default_params()
         params["pagesize"] = size
@@ -49,6 +65,11 @@ class StackOverflowClient:
 
     def get_comments(self, post_id, size=100, order="desc", sort="creation"):
         """
+        Get the comments from the StackOverflow API.
+        
+        :rtype dict("result": list):
+        :returns:
+            A dictionary with the query result.
         """
         params = self._get_default_params()
         params["pagesize"] = size
@@ -60,6 +81,9 @@ class StackOverflowClient:
 
     def _get_default_params(self):
         """
+        :rtype dict:
+        :returns:
+            Get parameters used by default in all queries.
         """
         return {
             "filter": "withbody",
@@ -69,6 +93,9 @@ class StackOverflowClient:
 
     def _get_items(self, result):
         """
+        :rtype dict("result": list):
+        :returns:
+            Get query result data from the StackOverflow API.
         """
         if result is not None and "items" in result:
             return {"result": result["items"]}

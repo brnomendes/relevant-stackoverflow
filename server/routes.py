@@ -1,15 +1,23 @@
 class Routes:
     """
+    Configure the server routes for making queries, and uses the API client to
+    obtain the results.
     """
 
     def __init__(self, flask_app, api_client):
         """
+        :param Flask flask_app:
+            An instance of the flask.
+        
+        :param SAILClient api_client:
+            An instance of the API client.
         """
         self._flask_app = flask_app
         self._api_client = api_client
 
     def configure(self):
         """
+        Configure the server routes.
         """
         self._configure_index()
         self._configure_questions()
@@ -18,11 +26,16 @@ class Routes:
 
     def run(self, debug=False):
         """
+        Runs flask in development mode.
+        
+        :param bool debug:
+            True to run in debug mode or False otherwise.
         """
         self._flask_app.run(debug=debug)
 
     def _configure_index(self):
         """
+        Configures the home page.
         """
 
         @self._flask_app.route("/")
@@ -31,6 +44,7 @@ class Routes:
 
     def _configure_questions(self, subpath="questions"):
         """
+        Configures routes for querying questions.
         """
 
         @self._flask_app.route(f"/{subpath}/top_ten_last_week/<string:tag>")
@@ -43,6 +57,7 @@ class Routes:
 
     def _configure_answers(self, subpath="answers"):
         """
+        Configures routes for querying answers.
         """
 
         @self._flask_app.route(f"/{subpath}/<int:question_id>")
@@ -51,6 +66,7 @@ class Routes:
 
     def _configure_comments(self, subpath="comments"):
         """
+        Configures routes for querying comments.
         """
 
         @self._flask_app.route(f"/{subpath}/<int:post_id>")

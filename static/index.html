@@ -95,6 +95,7 @@
     </div>
 </script>
 
+<!-- Question Modal Template -->
 <script type="text/x-template" id="expand-modal-template">
     <div class="modal is-active">
         <div class="modal-background"></div>
@@ -127,6 +128,7 @@
     </div>
 </script>
 
+<!-- Expand Question Button Template -->
 <script type="text/x-template" id="expand-trigger-btn-template">
     <a @click="$emit('expand')">
         <div class="tags has-addons">
@@ -140,6 +142,7 @@
     </a>
 </script>
 
+<!-- Modal-Button Group Question Template -->
 <script type="text/x-template" id="expand-btn-template">
     <div>
         <expand-modal v-if="showModal" @unexpand="showModal = false" v-bind:question="question">
@@ -148,6 +151,7 @@
     </div>
 </script>
 
+<!-- Modal Post Template -->
 <script type="text/x-template" id="post-template">
     <article class="media">
         <figure class="media-left">
