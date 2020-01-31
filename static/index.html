@@ -58,7 +58,7 @@
             <div class="media-content">
                 <div class="content">
                     <p>
-                        <strong>{{ question.owner.display_name }}</strong>
+                        <strong v-html="question.owner.display_name"></strong>
                         <small>{{ question.creation_date | timeAgo }}</small>
                         <br>
                         <span v-html="question.title"></span>
@@ -171,7 +171,7 @@
         <div class="media-content">
             <div class="content">
                 <p>
-                    <strong>{{ post.owner.display_name }}</strong>
+                    <strong v-html="post.owner.display_name"></strong>
                     <small>{{ post.creation_date | timeAgo }}</small>
                     <br><p v-html="post.body"><br>
                 </p>
