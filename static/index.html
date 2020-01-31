@@ -35,18 +35,9 @@
             </div>
         </section>
     </div>
-    <!-- Load JS Libraries -->
-    <script src="/static/libs/moment-v2.24.0.min.js"></script>
-    <script src="/static/libs/vue-v2.6.11.js"></script>
-    <script src="/static/libs/fontawesome-v5.12.0.min.js"></script>
-    <script src="/static/libs/axios-v0.19.2.min.js"></script>
-    <!-- Load JS Source Code -->
-    <script src="/static/app.js"></script>
-
 </body>
 
-</html>
-
+<!-- Question Box Template -->
 <script type="text/x-template" id="question-template">
     <div class="box">
         <article class="media">
@@ -61,10 +52,10 @@
                         <strong>{{ question.owner.display_name }}</strong>
                         <small>{{ question.creation_date | timeAgo }}</small>
                         <br>
-                        {{ question.title }}
+                        <span v-html="question.title"></span>
                     </p>
                 </div>
-                <nav class="level is-mobile">
+                <nav class="level is-mobile is-clipped">
                     <div class="level-left">
                         <div class="level-item">
                             <div class="field is-grouped is-grouped-multiline level-item">
@@ -72,19 +63,16 @@
                                     <a v-bind:href="question.link" target="_blank">
                                         <div class="tags has-addons">
                                             <span class="tag is-dark">open</span>
-                                            <span class="tag is-link"><span class="icon is-small"><i
-                                                        class="fas fa-external-link-alt" aria-hidden="true"></i></span></span>
+                                            <span class="tag is-link">
+                                                <span class="icon is-small">
+                                                    <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                                                </span>
+                                            </span>
                                         </div>
                                     </a>
                                 </div>
                                 <div class="control">
-                                    <a>
-                                        <div class="tags has-addons">
-                                            <span class="tag is-dark">expand</span>
-                                            <span class="tag is-primary"><span class="icon is-small"><i class="fas fa-expand"
-                                                        aria-hidden="true"></i></span></span>
-                                        </div>
-                                    </a>
+                                    <expand-btn v-bind:question="question"></expand-btn>
                                 </div>
                                 <div class="control">
                                     <div class="tags has-addons">
@@ -106,3 +94,85 @@
         </article>
     </div>
 </script>
+
+<script type="text/x-template" id="expand-modal-template">
+    <div class="modal is-active">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="subtitle">
+                    <span v-html="question.title"></span>
+                </p>
+            </header>
+            <section class="modal-card-body">
+                <post-content v-bind:post="question"></post-content>
+                <post-content v-bind:post="answer" v-for="answer in answers">
+                </post-content >
+            </section>
+            <footer class="modal-card-foot">
+                <a class="button is-link" v-bind:href="question.link" target="_blank">
+                    <span class="icon is-small">
+                        <i class="fas fa-external-link-alt"></i>
+                    </span>
+                    <span>Open in new tab</span>
+                </a>
+                <a class="button is-primary" @click="$emit('unexpand')">
+                    <span class="icon is-small">
+                        <i class="fas fa-expand"></i>
+                    </span>
+                    <span>Close</span>
+                </a>
+            </footer>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-template" id="expand-trigger-btn-template">
+    <a @click="$emit('expand')">
+        <div class="tags has-addons">
+            <span class="tag is-dark">expand</span>
+            <span class="tag is-primary">
+                <span class="icon is-small">
+                    <i class="fas fa-expand" aria-hidden="true"></i>
+                </span>
+            </span>
+        </div>
+    </a>
+</script>
+
+<script type="text/x-template" id="expand-btn-template">
+    <div>
+        <expand-modal v-if="showModal" @unexpand="showModal = false" v-bind:question="question">
+        </expand-modal>
+        <expand-trigger-btn @expand="showModal = true"></expand-trigger-btn>
+    </div>
+</script>
+
+<script type="text/x-template" id="post-template">
+    <article class="media">
+        <figure class="media-left">
+            <p class="image is-64x64">
+                <img v-bind:src="post.owner.profile_image" alt="Image">
+            </p>
+        </figure>
+        <div class="media-content">
+            <div class="content">
+                <p>
+                    <strong>{{ post.owner.display_name }}</strong>
+                    <small>{{ post.creation_date | timeAgo }}</small>
+                    <br><p v-html="post.body"><br>
+                </p>
+            </div>
+        </div>
+    </article>
+</script>
+
+<!-- Load JS Libraries -->
+<script src="/static/libs/moment-v2.24.0.min.js"></script>
+<script src="/static/libs/vue-v2.6.11.js"></script>
+<script src="/static/libs/fontawesome-v5.12.0.min.js"></script>
+<script src="/static/libs/axios-v0.19.2.min.js"></script>
+<!-- Load JS Source Code -->
+<script src="/static/app.js"></script>
+
+</html>
