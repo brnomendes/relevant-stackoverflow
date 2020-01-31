@@ -1,7 +1,7 @@
 class Routes:
     """
     """
-    
+
     def __init__(self, flask_app, api_client):
         """
         """
